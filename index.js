@@ -15,6 +15,11 @@ const render = require("./src/page-template.js");
 
 const teamMembers = [];
 
+function validateNumber(value) {
+    const isValid = !isNaN(value) && parseInt(value) > 0;
+    return isValid || "Please enter a valid positive number.";
+}
+
 // Function to collect manager info
 function createManager() {
     console.log("Please enter the team manager's information:");
@@ -29,6 +34,7 @@ function createManager() {
                 type: "input",
                 name: "id",
                 message: "Manager's employee ID Numer:",
+                validate: validateNumber,
             },
             {
                 type: "input",
@@ -57,24 +63,24 @@ function createManager() {
 function createTeam() {
     console.log("Select the type of team member you want to add:");
     inquirer
-      .prompt([
-        {
-          type: "list",
-          name: "memberType",
-          message: "Choose a team member type:",
-          choices: ["Engineer", "Intern", "No more team member to add"],
-        },
-      ])
-      .then((answer) => {
-        if (answer.memberType === "Engineer") {
-          createEngineer();
-        } else if (answer.memberType === "Intern") {
-          createIntern();
-        } else {
-          generateHTML();
-        }
-      });
-  }
+        .prompt([
+            {
+                type: "list",
+                name: "memberType",
+                message: "Choose a team member type:",
+                choices: ["Engineer", "Intern", "No more team member to add"],
+            },
+        ])
+        .then((answer) => {
+            if (answer.memberType === "Engineer") {
+                createEngineer();
+            } else if (answer.memberType === "Intern") {
+                createIntern();
+            } else {
+                generateHTML();
+            }
+        });
+}
 
 // Function to collect engineer info
 function createEngineer() {
@@ -90,6 +96,7 @@ function createEngineer() {
                 type: "input",
                 name: "id",
                 message: "Engineer's employee ID Number:",
+                validate: validateNumber,
             },
             {
                 type: "input",
@@ -128,7 +135,8 @@ function createIntern() {
             {
                 type: "input",
                 name: "id",
-                message: "Intern's employee ID:",
+                message: "Intern's employee ID Number:",
+                validate: validateNumber,
             },
             {
                 type: "input",
@@ -154,4 +162,11 @@ function createIntern() {
 }
 
 
+function generateHTML() {
+    const html = render(teamMembers);
+    fs.writeFileSync(outputPath, html);
+    console.log(`HTML file generated at ${outputPath}`);
+}
+
+// Start the application with the team manager info
 createManager();
