@@ -53,6 +53,29 @@ function createManager() {
         });
 }
 
+// Function to choose a team member to add
+function createTeam() {
+    console.log("Select the type of team member you want to add:");
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "memberType",
+          message: "Choose a team member type:",
+          choices: ["Engineer", "Intern", "No more team member to add"],
+        },
+      ])
+      .then((answer) => {
+        if (answer.memberType === "Engineer") {
+          createEngineer();
+        } else if (answer.memberType === "Intern") {
+          createIntern();
+        } else {
+          generateHTML();
+        }
+      });
+  }
+
 // Function to collect engineer info
 function createEngineer() {
     console.log("Please enter the engineer's information:");
@@ -129,3 +152,6 @@ function createIntern() {
             createTeam();
         });
 }
+
+
+createManager();
