@@ -13,3 +13,43 @@ const render = require("./src/page-template.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
+const teamMembers = [];
+
+// Function to collect manager info
+function createManager() {
+  console.log("Please enter the team manager's information:");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Manager's name:",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Manager's employee ID Numer:",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Manager's email:",
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Manager's office number:",
+      },
+    ])
+    .then((answers) => {
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      teamMembers.push(manager);
+      createTeam();
+    });
+}
+
